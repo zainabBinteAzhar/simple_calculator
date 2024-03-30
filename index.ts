@@ -1,10 +1,37 @@
+#! /usr/bin/env node
+import chalk from "chalk";
 import inquirer from "inquirer";
-console.log("\nCommand-Line Calculator\n");
+import gradient from 'gradient-string';
+import chalkanimation from 'chalk-animation';
+import figlet from 'figlet';
+//import { createSpinner } from "nanospinner";
+
+
+const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
+
+async function Title() {
+  const rainbowTitle = chalkanimation.rainbow(
+    "\nCommand-Line Calculator\n"
+  );
+
+  await sleep();
+  rainbowTitle.stop();
+}
+await Title();
+
+function Exit() {
+    console.clear();
+    const msg ="\nThankYou!\nPractise Again\n";
+    figlet(msg,(_err,data)=>{
+        console.log(gradient.pastel.multiline(data));
+    });
+  }
+
 var choice:number,num1:number,num2:number,result:number,operator:string;
 do
 {
-    console.log("**********MENU**********\n");
-    console.log("Enter 1: to perform calculations\nEnter 0: to exit");
+    console.log(chalk.bgYellowBright("**********MENU**********\n"));
+    console.log(chalk.bgYellowBright("Enter 1: to perform calculations\nEnter 0: to exit"));
     const userInput = await inquirer.prompt([
         {
             name: "choice",
@@ -44,6 +71,7 @@ do
         ]);
         operator=oper.operator; 
 
+        
         switch(operator)
         {
             case "+": result=num1+num2;
@@ -62,17 +90,19 @@ do
             console.log("\n"+num1+" / "+num2+" = "+result+"\n");
             break;
     
-            default: console.log("\nERROR : no such operator exists\n");
+            default: console.log(chalk.bgRed("\nERROR : no such operator exists\n"));
             break;
         }
+
     }
     else if(choice===0)
     {
-        console.log("\n**********EXIT**********\n"); 
+        Exit();
     }
     else
     {
-        console.log("\nERROR: SOMETHING WRONG ENTERED\n"); 
+        
+        console.log(chalk.bgRed("\nERROR: SOMETHING WRONG ENTERED\n")); 
     }
     
 }while(choice!=0);
